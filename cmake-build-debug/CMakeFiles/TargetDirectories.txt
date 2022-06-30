@@ -1,0 +1,3 @@
+/home/cyber/CLionProjects/chapterFourProgrammingProjects/cmake-build-debug/CMakeFiles/chapterFourProgrammingProjects.dir
+/home/cyber/CLionProjects/chapterFourProgrammingProjects/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/cyber/CLionProjects/chapterFourProgrammingProjects/cmake-build-debug/CMakeFiles/rebuild_cache.dir
