@@ -1,12 +1,31 @@
 #include <iostream>
 #include "cstdlib"
 #include "ctime"
+#include "cmath"
 
 using namespace std;
 
 int random_coin();
 int remaining_subtotal(int coin_value, int subtotal);
 // Returns the remaining subtotal after applying the value of the coin, coin_value, to the subtotal.
+int round_change(int change);
+// Rounds the change value to a value divisible by 5.
+
+/*
+ * Savitch says for an enumeration class without set value of the orders, they are incomparable.
+ * That is,
+ *         coin x = coin::dollar;
+ *         x == 100;
+ * would be an error were the orders of the coin not initialized a numeric value.
+ *
+ * As the orders of coins _are_ initialized with a numeric value, are variables of this class of object comparable?
+ */
+enum class coin {
+    dollar  = 100,
+    quarter =  25,
+    dime    =  10,
+    nickle  =   5
+};
 
 int main() {
     /*
@@ -31,13 +50,39 @@ int main() {
             cout << "Subtotal:\t" << static_cast<double>(total_cents)/100.0 << endl;
         }
 
-        if (total_cents <= -5) {
-            /*
-             * TODO: Dispense change using the largest coins possible first, then smaller coins.
-             */
+        if (total_cents <= -3) {
+            //  Total,                          (1.00,     0.25,     0.10,     0.05)
+            int change = abs(total_cents), change_l_count, change_q_count, change_d_count, change_n_count;
+
+            // Round the change to a value divisible by 5.
+            change = round_change(change);
+            cout.setf(ios::fixed);
+            cout.setf(ios::showpoint);
+            cout.precision(2);
+            cout << "Your change is: $" << static_cast<double>(change) / 100.0 << endl;
+
+            // Dispense dollars, if any.
+            change_l_count = change / 100;
+            change -= change_l_count * 100;
+            cout << change_l_count << " $1.00 coins\n";
+
+            // Dispense quarters, if any.
+            change_q_count = change / 25;
+            change -= change_q_count * 25;
+            cout << change_q_count << " $0.25 coins\n";
+
+            // Dispense dimes, if any.
+            change_d_count = change / 10;
+            change -= change_d_count * 10;
+            cout << change_d_count << " $0.10 coins\n";
+
+            // Dispense nickles, if any.
+            change_n_count = change / 5;
+            change -= change_n_count * 5;
+            cout << change_n_count << " $0.05 coins\n";
         }
 
-        cout << "Repeat the vending machine simulation? (Y/n) "; cin >> repeat_simulation;
+        cout << endl << "Repeat the vending machine simulation? (Y/n) "; cin >> repeat_simulation;
     } while ((repeat_simulation == 'Y') || (repeat_simulation == 'y'));
 
     return 0;
@@ -64,4 +109,11 @@ int random_coin() {
             exit(1);
     }
     return random_coin;
+}
+
+int round_change(int change) {
+    while ((change % 5) != 0) {
+        if ((change % 5) >= 3) { change++; } else { change--; }
+    }
+    return change;
 }
