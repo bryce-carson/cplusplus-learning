@@ -11,22 +11,6 @@ int remaining_subtotal(int coin_value, int subtotal);
 int round_change(int change);
 // Rounds the change value to a value divisible by 5.
 
-/*
- * Savitch says for an enumeration class without set value of the orders, they are incomparable.
- * That is,
- *         coin x = coin::dollar;
- *         x == 100;
- * would be an error were the orders of the coin not initialized a numeric value.
- *
- * As the orders of coins _are_ initialized with a numeric value, are variables of this class of object comparable?
- */
-enum class coin {
-    dollar  = 100,
-    quarter =  25,
-    dime    =  10,
-    nickle  =   5
-};
-
 int main() {
     /*
      * Clag-Tidy complains about this, saying it is _still_ predictable, but Savitch says this is the way to do it.
@@ -51,7 +35,7 @@ int main() {
         }
 
         if (total_cents <= -3) {
-            //  Total,                          (1.00,     0.25,     0.10,     0.05)
+            //  Total,                              (1.00,           0.25,           0.10,           0.05)
             int change = abs(total_cents), change_l_count, change_q_count, change_d_count, change_n_count;
 
             // Round the change to a value divisible by 5.
@@ -113,7 +97,7 @@ int random_coin() {
 
 int round_change(int change) {
     while ((change % 5) != 0) {
-        if ((change % 5) >= 3) { change++; } else { change--; }
+        ((change % 5) >= 3) ? change++ : change--;
     }
     return change;
 }
